@@ -1,13 +1,15 @@
 import * as React from "react";
-import type { NextPage } from "next";
+// Next
 import Head from "next/head";
-import Image from "next/image";
-import { Banner } from "@components";
-import styles from "../styles/Home.module.css";
+import type { NextPage } from "next";
+// Components
+import { Banner, NavBar } from "@components";
+// Styles
+import S from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <div className={S.container}>
       <Head>
         <title>Netflix</title>
         <meta name="description" content="netflix app" />
@@ -15,7 +17,7 @@ const Home: NextPage = () => {
       </Head>
 
       <h1>Netflix</h1>
-      {/* <NavBar /> */}
+      <NavBar />
       <Banner
         title="Clifford the red dog"
         subTitle="a very cute dog"
