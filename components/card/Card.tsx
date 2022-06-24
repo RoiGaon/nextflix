@@ -1,8 +1,11 @@
 import React from "react";
 // Next
 import Image from "next/image";
+// Helpers
+import { motion } from "framer-motion";
 // Styles
 import S from "./Card.module.css";
+import cn from "classnames";
 
 type Size = "small" | "medium" | "large";
 interface Props {
@@ -25,7 +28,10 @@ const Card: React.FC<Props> = ({ imgUrl = defaultImage, size = "medium" }) => {
     <>
       <div className={S.container}>
         Card
-        <div className={classMap[size]}>
+        <motion.div
+          className={cn(classMap[size], S.imgMotionWrapper)}
+          whileHover={{ scale: 1.2 }}
+        >
           <Image
             src={imgSrc}
             alt="image"
@@ -33,7 +39,7 @@ const Card: React.FC<Props> = ({ imgUrl = defaultImage, size = "medium" }) => {
             className={S.cardImg}
             onError={() => setImgSrc(defaultImage)}
           />
-        </div>
+        </motion.div>
       </div>
     </>
   );
