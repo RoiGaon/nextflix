@@ -3,7 +3,7 @@ import * as React from "react";
 import Head from "next/head";
 import type { NextPage } from "next";
 // Components
-import { Banner, NavBar, Card } from "@components";
+import { Banner, NavBar, SectionCards } from "@components";
 // Styles
 import S from "../styles/Home.module.css";
 
@@ -21,9 +21,9 @@ const Home: NextPage = () => {
         subTitle="a very cute dog"
         imgUrl="/static/clifford.webp"
       />
-      <Card imgUrl="/static/clifford.webp" size="large" />
-      <Card imgUrl="/static/clifford.webp" size="medium" />
-      <Card imgUrl="/static/clifford.webp" size="small" />
+      <div className={S.sectionWrapper}>
+        <SectionCards title="Disney" />
+      </div>
     </div>
   );
 };
