@@ -8,12 +8,16 @@ import type {
 } from "next";
 // Components
 import { Banner, NavBar, SectionCards } from "@components";
+// Helpers
+import { getPopularVideos, getVideos } from "lib/videos";
 // Styles
 import S from "../styles/Home.module.css";
-import { getVideos } from "lib/videos";
 
 const Home: NextPage = ({
   disneyVideos,
+  productivityVideos,
+  travelVideos,
+  popularVideos,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className={S.container}>
@@ -30,7 +34,13 @@ const Home: NextPage = ({
       />
       <div className={S.sectionWrapper}>
         <SectionCards title="Disney" videos={disneyVideos} size="large" />
-        <SectionCards title="Disney" videos={disneyVideos} size="medium" />
+        <SectionCards title="Travel" videos={travelVideos} size="small" />
+        <SectionCards
+          title="Productivity"
+          videos={productivityVideos}
+          size="medium"
+        />
+        <SectionCards title="Popular" videos={popularVideos} size="small" />
       </div>
     </div>
   );
@@ -39,11 +49,17 @@ const Home: NextPage = ({
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const disneyVideos = getVideos();
+  const disneyVideos = await getVideos("disney trailer");
+  const productivityVideos = await getVideos("Productivity");
+  const travelVideos = await getVideos("travel");
+  const popularVideos = await getPopularVideos();
 
   return {
     props: {
       disneyVideos,
+      productivityVideos,
+      travelVideos,
+      popularVideos,
     },
   };
 };

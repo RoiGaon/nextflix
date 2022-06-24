@@ -12,7 +12,7 @@ interface Props {
   size: Size;
 }
 
-const SectionCards: React.FC<Props> = ({ title, videos, size }) => {
+const SectionCards: React.FC<Props> = ({ title, videos = [], size }) => {
   return (
     <>
       <section className={S.container}>
