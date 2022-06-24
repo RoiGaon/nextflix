@@ -8,6 +8,12 @@ import { Banner, NavBar, SectionCards } from "@components";
 import S from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
+  const disneyVideos = [
+    { imgUrl: "/static/clifford.webp" },
+    { imgUrl: "/static/clifford.webp" },
+    { imgUrl: "/static/clifford.webp" },
+  ];
+
   return (
     <div className={S.container}>
       <Head>
@@ -22,7 +28,8 @@ const Home: NextPage = () => {
         imgUrl="/static/clifford.webp"
       />
       <div className={S.sectionWrapper}>
-        <SectionCards title="Disney" />
+        <SectionCards title="Disney" videos={disneyVideos} size="large" />
+        <SectionCards title="Disney" videos={disneyVideos} size="medium" />
       </div>
     </div>
   );
