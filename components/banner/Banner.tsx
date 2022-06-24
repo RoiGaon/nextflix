@@ -29,7 +29,7 @@ const Banner: React.FC<Props> = ({ title, subTitle, imgUrl }) => {
             <div className={S.playBtnWrapper}>
               <button className={S.btnWithIcon} onClick={handleOnPlay}>
                 <Image
-                  src="/static/play-arrow.svg"
+                  src="/static/play_arrow.svg"
                   alt="Play icon"
                   width={32}
                   height={32}
