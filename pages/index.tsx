@@ -3,7 +3,7 @@ import * as React from "react";
 import Head from "next/head";
 import type { NextPage } from "next";
 // Components
-import { Banner, NavBar } from "@components";
+import { Banner, NavBar, Card } from "@components";
 // Styles
 import S from "../styles/Home.module.css";
 
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         subTitle="a very cute dog"
         imgUrl="/static/clifford.webp"
       />
-      {/* Card */}
+      <Card />
     </div>
   );
 };
