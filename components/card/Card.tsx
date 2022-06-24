@@ -3,11 +3,11 @@ import React from "react";
 import Image from "next/image";
 // Helpers
 import { motion } from "framer-motion";
+import { Size } from "types";
 // Styles
 import S from "./Card.module.css";
 import cn from "classnames";
 
-type Size = "small" | "medium" | "large";
 interface Props {
   imgUrl: string;
   size: Size;
