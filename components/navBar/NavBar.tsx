@@ -19,8 +19,16 @@ const NavBar: React.FC<Props> = ({ userName }) => {
             </a>
           </Link>
           <ul className={S.navItems}>
-            <li className={S.navItem}>Home</li>
-            <li className={S.navItem2}>My List</li>
+            <Link href="/">
+              <a>
+                <li className={S.navItem}>Home</li>
+              </a>
+            </Link>
+            <Link href="/browse/my-list">
+              <a>
+                <li className={S.navItem2}>My List</li>
+              </a>
+            </Link>
           </ul>
           <nav className={S.navContainer}>
             <div>
@@ -29,7 +37,9 @@ const NavBar: React.FC<Props> = ({ userName }) => {
               </button>
               <div className={S.navDropdown}>
                 <div>
-                  <a className={S.linkName}>Sign Out</a>
+                  <Link href="/login">
+                    <a className={S.linkName}>Sign Out</a>
+                  </Link>
                   <div className={S.lineWrapper}></div>
                 </div>
               </div>
