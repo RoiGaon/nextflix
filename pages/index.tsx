@@ -1,16 +1,20 @@
 import * as React from "react";
 // Next
 import Head from "next/head";
-import type { NextPage } from "next";
+import type {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from "next";
 // Components
 import { Banner, NavBar, SectionCards } from "@components";
 // Styles
 import S from "../styles/Home.module.css";
 import { getVideos } from "lib/videos";
 
-const Home: NextPage = () => {
-  const disneyVideos = getVideos();
-
+const Home: NextPage = ({
+  disneyVideos,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className={S.container}>
       <Head>
@@ -33,3 +37,13 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const disneyVideos = getVideos();
+
+  return {
+    props: {
+      disneyVideos,
+    },
+  };
+};
