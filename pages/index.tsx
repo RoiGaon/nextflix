@@ -27,7 +27,7 @@ const Home: NextPage = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={S.main}>
-        <NavBar userName="roigaon@gmail.com" />
+        <NavBar />
         <Banner
           title="Clifford the red dog"
           subTitle="a very cute dog"

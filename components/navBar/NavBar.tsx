@@ -2,15 +2,28 @@ import * as React from "react";
 // Next
 import Link from "next/link";
 import Image from "next/image";
+// Helpers
+import { magic } from "lib/magic-client";
 // Styles
 import S from "./NavBar.module.css";
 
-interface Props {
-  userName: string;
-}
-
-const NavBar: React.FC<Props> = ({ userName }) => {
+const NavBar: React.FC = () => {
   const [showDropDown, setShowDropDown] = React.useState(false);
+  const [userName, setUserName] = React.useState("");
+
+  React.useEffect(() => {
+    async function getUsername() {
+      try {
+        const { email } = await magic!.user.getMetadata();
+        if (email) {
+          setUserName(email);
+        }
+      } catch (error) {
+        console.log("Error retrieving email:", error);
+      }
+    }
+    getUsername();
+  }, []);
 
   return (
     <>
