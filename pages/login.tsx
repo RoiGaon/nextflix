@@ -3,14 +3,29 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
+// Helpers
+import { magic } from "lib/magic-client";
 // Styles
 import S from "../styles/Login.module.css";
 
 export default function Login() {
   const [email, setEmail] = React.useState("");
   const [userMsg, setUserMsg] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
+  const router = useRouter();
 
-  const handleLoginWithEmail = (
+  React.useEffect(() => {
+    const handleComplete = () => setIsLoading(false);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+    return () => {
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
+
+  const handleLoginWithEmail = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
@@ -19,9 +34,20 @@ export default function Login() {
     );
     const isEmailValid = emailRegex.test(email);
     if (email.trim().length > 0 && isEmailValid) {
-      // route to dashboard
+      // log in a user by their email
+      try {
+        setIsLoading(true);
+        const didToken = await magic!.auth.loginWithMagicLink({ email });
+        if (didToken) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.log("Something went wrong logging in ", error);
+        setIsLoading(false);
+      }
     } else {
       setUserMsg("Enter a valid email address");
+      setIsLoading(false);
     }
   };
 
@@ -61,7 +87,7 @@ export default function Login() {
             />
             <p className={S.userMsg}>{userMsg}</p>
             <button onClick={handleLoginWithEmail} className={S.loginBtn}>
-              Sign In
+              {isLoading ? "Loading..." : "Sign In"}
             </button>
           </div>
         </main>
