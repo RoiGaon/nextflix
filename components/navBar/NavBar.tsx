@@ -6,10 +6,13 @@ import Image from "next/image";
 import { magic } from "lib/magic-client";
 // Styles
 import S from "./NavBar.module.css";
+import { useRouter } from "next/router";
 
 const NavBar: React.FC = () => {
   const [showDropDown, setShowDropDown] = React.useState(false);
   const [userName, setUserName] = React.useState("");
+
+  const router = useRouter();
 
   React.useEffect(() => {
     async function getUsername() {
@@ -24,6 +27,16 @@ const NavBar: React.FC = () => {
     }
     getUsername();
   }, []);
+
+  const handleSignout = async () => {
+    try {
+      await magic!.user.logout();
+      router.push("/login");
+    } catch (error) {
+      console.error("Error logging out", error);
+      router.push("/login");
+    }
+  };
 
   return (
     <>
@@ -70,9 +83,9 @@ const NavBar: React.FC = () => {
               {showDropDown && (
                 <div className={S.navDropdown}>
                   <div>
-                    <Link href="/login">
-                      <a className={S.linkName}>Sign Out</a>
-                    </Link>
+                    <a className={S.linkName} onClick={handleSignout}>
+                      Sign Out
+                    </a>
                     <div className={S.lineWrapper}></div>
                   </div>
                 </div>
