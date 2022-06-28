@@ -32,7 +32,7 @@ const Card: React.FC<Props> = ({
   const [imgSrc, setImgSrc] = React.useState(imgUrl);
   return (
     <>
-      <Link href={`/video/${encodeURIComponent(id)}`}>
+      <Link href={`/video/${encodeURIComponent(id)}`} passHref>
         <div className={S.container}>
           <motion.div
             className={cn(classMap[size], S.imgMotionWrapper)}
