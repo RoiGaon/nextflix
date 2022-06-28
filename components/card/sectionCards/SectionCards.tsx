@@ -2,13 +2,13 @@ import React from "react";
 // Components
 import Card from "../Card";
 // Helpers
-import { Size } from "types";
+import { Size, Video } from "types";
 // Styles
 import S from "./SectionCards.module.css";
 
 interface Props {
   title: string;
-  videos: any[];
+  videos: Video[];
   size: Size;
 }
 
@@ -19,7 +19,7 @@ const SectionCards: React.FC<Props> = ({ title, videos = [], size }) => {
         <h2 className={S.title}>{title}</h2>
         <div className={S.cardsWrapper}>
           {videos.map((video, i) => (
-            <Card imgUrl={video.imgUrl} size={size} index={i} key={i} />
+            <Card video={video} key={i} size={size} index={i} />
           ))}
         </div>
       </section>

@@ -10,20 +10,8 @@ import { magic } from "lib/magic-client";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
-
-  React.useEffect(() => {
-    const func = async () => {
-      const isLoggedIn = await magic!.user.isLoggedIn();
-      if (isLoggedIn) {
-        router.push("/");
-      } else {
-        router.push("/login");
-      }
-    };
-    func();
-  }, []);
 
   React.useEffect(() => {
     const handleComplete = () => {
