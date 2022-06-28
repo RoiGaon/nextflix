@@ -15,14 +15,17 @@ const VideoPage = () => {
   const { videoId } = router.query;
   return (
     <>
-      <Modal
-        isOpen={isModalOpen}
-        contentLabel="Watch the video"
-        onRequestClose={() => {}}
-        overlayClassName={S.overlay}
-      >
-        <div>VideoPage</div>
-      </Modal>
+      <div className={S.container}>
+        <Modal
+          isOpen={isModalOpen}
+          contentLabel="Watch the video"
+          onRequestClose={() => router.back()}
+          className={S.modal}
+          overlayClassName={S.overlay}
+        >
+          <div>VideoPage</div>
+        </Modal>
+      </div>
     </>
   );
 };
