@@ -24,11 +24,15 @@ const classMap: any = {
 const defaultImage =
   "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1340&q=80";
 
-const Card: React.FC<Props> = ({ video, size = "medium", index }) => {
-  const [imgSrc, setImgSrc] = React.useState(video.imgUrl ?? defaultImage);
+const Card: React.FC<Props> = ({
+  video: { imgUrl = defaultImage, id, title },
+  size = "medium",
+  index,
+}) => {
+  const [imgSrc, setImgSrc] = React.useState(imgUrl);
   return (
     <>
-      <Link href={`/video/${encodeURIComponent(video.id)}`}>
+      <Link href={`/video/${encodeURIComponent(id)}`}>
         <div className={S.container}>
           <motion.div
             className={cn(classMap[size], S.imgMotionWrapper)}
@@ -36,7 +40,7 @@ const Card: React.FC<Props> = ({ video, size = "medium", index }) => {
           >
             <Image
               src={imgSrc}
-              alt="image"
+              alt={title}
               layout="fill"
               className={S.cardImg}
               onError={() => setImgSrc(defaultImage)}
