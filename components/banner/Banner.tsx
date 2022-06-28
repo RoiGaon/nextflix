@@ -1,18 +1,19 @@
 import * as React from "react";
 // Next
 import Image from "next/image";
-
+import { useRouter } from "next/router";
 // Styles
 import S from "./Banner.module.css";
 
 interface Props {
+  id: string;
   title: string;
   subTitle: string;
   imgUrl: string;
 }
 
-const Banner: React.FC<Props> = ({ title, subTitle, imgUrl }) => {
-  const handleOnPlay = () => {};
+const Banner: React.FC<Props> = ({ id, title, subTitle, imgUrl }) => {
+  const router = useRouter();
 
   return (
     <>
@@ -27,7 +28,10 @@ const Banner: React.FC<Props> = ({ title, subTitle, imgUrl }) => {
             <h3 className={S.subTitle}>{subTitle}</h3>
 
             <div className={S.playBtnWrapper}>
-              <button className={S.btnWithIcon} onClick={handleOnPlay}>
+              <button
+                className={S.btnWithIcon}
+                onClick={() => router.push(`/video/${id}`)}
+              >
                 <Image
                   src="/static/play_arrow.svg"
                   alt="Play icon"
