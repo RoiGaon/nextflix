@@ -23,7 +23,16 @@ const VideoPage = () => {
           className={S.modal}
           overlayClassName={S.overlay}
         >
-          <div>VideoPage</div>
+          <div>
+            <iframe
+              id="ytplayer"
+              width="100%"
+              height="360"
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=0&controls=0&&rel=1&origin=http://example.com`}
+              frameBorder="0"
+              className={S.videoPlayer}
+            />
+          </div>
         </Modal>
       </div>
     </>
