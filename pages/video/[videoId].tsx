@@ -5,35 +5,37 @@ import type {
   InferGetStaticPropsType,
   GetStaticProps,
   GetStaticPropsContext,
+  GetStaticPaths,
 } from "next";
 // Components
 import Modal from "react-modal";
+// Helpers
+import { getYouTubeVideoById } from "lib/videos";
 // Styles
 import S from "../../styles/VideoPage.module.css";
 import cn from "classnames";
 
 Modal.setAppElement("#__next");
 
-const VideoPage = () => {
-  const [isModalOpen, setIsModalOpen] = React.useState(true);
+const VideoPage = ({
+  video,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
   const { videoId } = router.query;
 
-  const video = {
-    title: "Hi cute dog",
-    publishTime: "1990-01-01",
-    description: "Abig red dog that is super cute,can he get any bigger?",
-    channelTitle: "Paramount Pictures",
-    viewCount: 10000,
-  };
-
-  const { title, publishTime, description, channelTitle, viewCount } = video;
+  const {
+    title,
+    publishTime,
+    description,
+    channelTitle,
+    statistics: { viewCount } = { viewCount: 0 },
+  } = video;
 
   return (
     <>
       <div className={S.container}>
         <Modal
-          isOpen={isModalOpen}
+          isOpen={true}
           contentLabel="Watch the video"
           onRequestClose={() => router.back()}
           className={S.modal}
@@ -74,8 +76,26 @@ const VideoPage = () => {
 
 export default VideoPage;
 
-// export const getStaticProps: GetStaticProps = (context: any) => {
-//   return {
-//     props: {},
-//   };
-// };
+export const getStaticProps: GetStaticProps = async (
+  context: GetStaticPropsContext
+) => {
+  const videoId = context.params?.videoId;
+  const videoArray = await getYouTubeVideoById(String(videoId));
+
+  return {
+    props: {
+      video: videoArray.length > 0 ? videoArray[0] : {},
+    },
+    revalidate: 10, // 10 seconds
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const listOfVideos = ["mYfJxlgR2jw", "4zH5iYM4wJo", "KCPEHSAViiQ"];
+  const paths = listOfVideos.map((videoId) => ({ params: { videoId } }));
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};
