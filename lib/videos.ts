@@ -1,12 +1,20 @@
-export const getCommonVideos = async (url: string) => {
-  const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
-  try {
-    const BASE_URL = "youtube.googleapis.com/youtube/v3";
+import videoTestData from "../data/videos.json";
 
-    const res = await fetch(
-      `https://${BASE_URL}/${url}&key=${YOUTUBE_API_KEY}`
-    );
-    const data = await res.json();
+const fetchVideos = async (url: string) => {
+  const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+  const BASE_URL = "youtube.googleapis.com/youtube/v3";
+
+  const response = await fetch(
+    `https://${BASE_URL}/${url}&maxResults=25&key=${YOUTUBE_API_KEY}`
+  );
+
+  return await response.json();
+};
+
+export const getCommonVideos = async (url: string) => {
+  try {
+    const isDev = process.env.NODE_ENV === "production" ? false : true;
+    const data = isDev ? videoTestData : await fetchVideos(url);
 
     if (data?.error) {
       console.error("Youtube Api Error ", data.error);
