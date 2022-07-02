@@ -8,6 +8,7 @@ import type {
   GetStaticPaths,
 } from "next";
 // Components
+import { NavBar } from "@components";
 import Modal from "react-modal";
 // Helpers
 import { getYouTubeVideoById } from "lib/videos";
@@ -34,6 +35,7 @@ const VideoPage = ({
   return (
     <>
       <div className={S.container}>
+        <NavBar />
         <Modal
           isOpen={true}
           contentLabel="Watch the video"
