@@ -26,7 +26,9 @@ export default function Login() {
   }, [router]);
 
   const handleLoginWithEmail = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.KeyboardEvent<HTMLInputElement>
   ) => {
     e.preventDefault();
     const emailRegex = new RegExp(
@@ -39,7 +41,20 @@ export default function Login() {
         setIsLoading(true);
         const didToken = await magic!.auth.loginWithMagicLink({ email });
         if (didToken) {
-          router.push("/");
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const loggedInResponse = await response.json();
+          if (loggedInResponse.done) {
+            router.push("/");
+          } else {
+            setUserMsg("Something went wrong logging in");
+            setIsLoading(false);
+          }
         }
       } catch (error) {
         console.log("Something went wrong logging in ", error);
@@ -83,6 +98,9 @@ export default function Login() {
               onChange={(e) => {
                 setEmail(e.target.value);
                 setUserMsg("");
+              }}
+              onKeyDown={(e) => {
+                e.key === "Enter" && handleLoginWithEmail(e);
               }}
             />
             <p className={S.userMsg}>{userMsg}</p>
