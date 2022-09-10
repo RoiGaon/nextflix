@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 // Helpers
 import { magic } from "lib/magic-client";
 // Styles
-import S from "../styles/Login.module.css";
+import S from "@styles/Login.module.css";
 
 export default function Login() {
   const [email, setEmail] = React.useState("");

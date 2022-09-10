@@ -11,7 +11,7 @@ import { Banner, NavBar, SectionCards } from "@components";
 // Helpers
 import { getPopularVideos, getVideos } from "lib/videos";
 // Styles
-import S from "../styles/Home.module.css";
+import S from "@styles/Home.module.css";
 
 const Home: NextPage = ({
   disneyVideos,

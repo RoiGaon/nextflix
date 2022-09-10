@@ -13,7 +13,7 @@ import Modal from "react-modal";
 // Helpers
 import { getYouTubeVideoById } from "lib/videos";
 // Styles
-import S from "../../styles/VideoPage.module.css";
+import S from "@styles/VideoPage.module.css";
 import cn from "classnames";
 import { DisLikeIcon, LikeIcon } from "@components/icons";
 
