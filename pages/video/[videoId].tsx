@@ -8,6 +8,7 @@ import type {
   GetStaticPaths,
 } from "next";
 // Components
+import { DisLikeIcon, LikeIcon } from "@components/icons";
 import { NavBar } from "@components";
 import Modal from "react-modal";
 // Helpers
@@ -15,7 +16,6 @@ import { getYouTubeVideoById } from "lib/videos";
 // Styles
 import S from "@styles/VideoPage.module.css";
 import cn from "classnames";
-import { DisLikeIcon, LikeIcon } from "@components/icons";
 
 Modal.setAppElement("#__next");
 
@@ -35,14 +35,32 @@ const VideoPage = ({
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
 
-  const handleToggleLike = () => {
-    setIsLiked(!isLiked);
+  const handleToggleLike = async () => {
+    const val = !isLiked;
+    setIsLiked(val);
     setIsDisLiked(isLiked);
+    const res = await fetch("/api/stats", {
+      method: "POST",
+      body: JSON.stringify({
+        videoId,
+        favourited: val ? 1 : 0,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
   };
 
-  const handleToggleDisLike = () => {
+  const handleToggleDisLike = async () => {
+    const val = !isDisLiked;
     setIsDisLiked(!isDisLiked);
     setIsLiked(isDisLiked);
+    const res = await fetch("/api/stats", {
+      method: "POST",
+      body: JSON.stringify({
+        videoId,
+        favourited: val ? 0 : 1,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
   };
 
   return (
