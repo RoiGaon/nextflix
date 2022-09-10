@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { magicAdmin } from "@lib/magic-server";
 import jwt from "jsonwebtoken";
-import { isNewUser } from "@lib/db/hasura";
+import { isNewUser, createNewUser } from "@lib/db/hasura";
+import { setTokenCookie } from "@lib/cookies";
 
 type Data = {
   done: boolean;
@@ -10,7 +11,7 @@ type Data = {
 
 export default async function login(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<any>
 ) {
   if (req.method === "POST") {
     try {
@@ -33,7 +34,8 @@ export default async function login(
         process.env.JWT_SECRET
       );
       const isNewUserQuery = await isNewUser(token, metadata.issuer!);
-
+      isNewUserQuery && (await createNewUser(token, metadata));
+      setTokenCookie(token, res);
       res.status(200).json({ done: true, isNewUserQuery });
     } catch (error) {
       console.log("Something went wrong logging in " + error);
