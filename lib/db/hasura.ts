@@ -1,3 +1,5 @@
+import { VideoStatGraphQLData } from "types";
+
 const queryHasuraGQL = async (
   operationsDoc: string,
   operationName: string,
@@ -94,4 +96,61 @@ export const findVideoIdByUser = async (
   );
 
   return res?.stats?.length > 0;
+};
+
+export const insertStat = async (
+  token: string,
+  userId: string,
+  videoId: string
+) => {
+  const operationsDoc = `mutation insertStat($favourited: Int!, $watched: Boolean!, $userId: String!, $videoId: String!) {
+    insert_stats_one(object: {favourited: $favourited, userId: $userId, videoId: $videoId, watched: $watched}) {
+      favourited
+      id
+      userId
+    }
+  }`;
+
+  return await queryHasuraGQL(
+    operationsDoc,
+    "insertStat",
+    {
+      userId,
+      videoId,
+    },
+    token
+  );
+};
+
+export const updateStat = async (
+  token: string,
+  { favourited, watched, userId, videoId }: VideoStatGraphQLData
+) => {
+  const operationsDoc = `mutation updateStat($watched: Boolean!, $userId: String!, $videoId: String!) {
+    update_stats(
+      _set: {watched: $watched, favourited: $favourited},
+      where: {
+        userId: {_eq: $userId},
+        videoId: {_eq: $videoId}
+      }) {
+      returning {
+        favourited,
+        userId,
+        videoId,
+        watched
+      }
+    }
+  }`;
+
+  return await queryHasuraGQL(
+    operationsDoc,
+    "updateStat",
+    {
+      favourited,
+      watched,
+      userId,
+      videoId,
+    },
+    token
+  );
 };
