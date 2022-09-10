@@ -35,32 +35,30 @@ const VideoPage = ({
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
 
+  const runRatingService = async (favourited: number) =>
+    await (
+      await fetch("/api/stats", {
+        method: "POST",
+        body: JSON.stringify({
+          videoId,
+          favourited,
+        }),
+        headers: { "Content-Type": "application/json" },
+      })
+    ).json();
+
   const handleToggleLike = async () => {
     const val = !isLiked;
     setIsLiked(val);
     setIsDisLiked(isLiked);
-    const res = await fetch("/api/stats", {
-      method: "POST",
-      body: JSON.stringify({
-        videoId,
-        favourited: val ? 1 : 0,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+    await runRatingService(val ? 1 : 0);
   };
 
   const handleToggleDisLike = async () => {
     const val = !isDisLiked;
     setIsDisLiked(!isDisLiked);
     setIsLiked(isDisLiked);
-    const res = await fetch("/api/stats", {
-      method: "POST",
-      body: JSON.stringify({
-        videoId,
-        favourited: val ? 0 : 1,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+    await runRatingService(val ? 0 : 1);
   };
 
   return (
