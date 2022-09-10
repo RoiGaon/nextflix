@@ -52,8 +52,20 @@ const VideoPage = ({
             frameBorder="0"
             className={S.videoPlayer}
           />
-          <LikeIcon />
-          <DisLikeIcon />
+          <div className={S.likeDislikeBtnWrapper}>
+            <div className={S.likeBtnWrapper}>
+              <button>
+                <div className={S.btnWrapper}>
+                  <LikeIcon />
+                </div>
+              </button>
+            </div>
+            <button>
+              <div className={S.btnWrapper}>
+                <DisLikeIcon />
+              </div>
+            </button>
+          </div>
           <div className={S.modalBody}>
             <div className={S.modalBodyContent}>
               <div className={S.col1}>
