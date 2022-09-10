@@ -11,8 +11,15 @@ export default async function stats(
     try {
       const token = req.cookies.token;
       // check for a token
-      if (!token) return res.status(403).json({ message: "Forbidden client" });
-      const { videoId, favourited, watched } = req.body;
+      if (!token)
+        return res
+          .status(403)
+          .json({ done: false, message: "Forbidden client" });
+      const { videoId, favourited, watched = true } = req.body;
+      if (!videoId)
+        return res
+          .status(400)
+          .json({ done: false, message: "missing videoId" });
       // verify token
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       const doesStatExist = await findVideoIdByUser(
