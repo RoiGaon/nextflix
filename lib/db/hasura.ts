@@ -93,5 +93,5 @@ export const findVideoIdByUser = async (
     token
   );
 
-  return await res.json();
+  return res?.stats?.length > 0;
 };
