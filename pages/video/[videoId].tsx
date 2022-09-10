@@ -22,6 +22,8 @@ Modal.setAppElement("#__next");
 const VideoPage = ({
   video,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const [isLiked, setIsLiked] = React.useState(false);
+  const [isDisLiked, setIsDisLiked] = React.useState(false);
   const router = useRouter();
   const { videoId } = router.query;
 
@@ -32,6 +34,16 @@ const VideoPage = ({
     channelTitle,
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
+
+  const handleToggleLike = () => {
+    setIsLiked(!isLiked);
+    setIsDisLiked(isLiked);
+  };
+
+  const handleToggleDisLike = () => {
+    setIsDisLiked(!isDisLiked);
+    setIsLiked(isDisLiked);
+  };
 
   return (
     <>
@@ -54,15 +66,15 @@ const VideoPage = ({
           />
           <div className={S.likeDislikeBtnWrapper}>
             <div className={S.likeBtnWrapper}>
-              <button>
+              <button onClick={handleToggleLike}>
                 <div className={S.btnWrapper}>
-                  <LikeIcon />
+                  <LikeIcon selected={isLiked} />
                 </div>
               </button>
             </div>
-            <button>
+            <button onClick={handleToggleDisLike}>
               <div className={S.btnWrapper}>
-                <DisLikeIcon />
+                <DisLikeIcon selected={isDisLiked} />
               </div>
             </button>
           </div>
