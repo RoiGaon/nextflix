@@ -5,3 +5,10 @@ export interface Video {
   imgUrl: string;
   title: string;
 }
+
+export interface VideoStatGraphQLData {
+  favourited: number;
+  watched: boolean;
+  userId: string;
+  videoId: string;
+}
