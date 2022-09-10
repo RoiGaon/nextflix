@@ -12,7 +12,7 @@ export default async function stats(
       const token = req.cookies.token;
       // check for a token
       if (!token) return res.status(403).json({ message: "Forbidden client" });
-      const videoId = String(req.query.videoId);
+      const { videoId, favourited, watched } = req.body;
       // verify token
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       const doesStatExist = await findVideoIdByUser(
@@ -23,8 +23,8 @@ export default async function stats(
       if (doesStatExist) {
         // update video
         const updateVideo: VideoStatGraphQLData = {
-          favourited: 0,
-          watched: true,
+          favourited,
+          watched,
           userId: decodedToken.issuer,
           videoId,
         };
@@ -33,8 +33,8 @@ export default async function stats(
       } else {
         // add video
         const insertVideo: VideoStatGraphQLData = {
-          favourited: 0,
-          watched: true,
+          favourited,
+          watched,
           userId: decodedToken.issuer,
           videoId,
         };
