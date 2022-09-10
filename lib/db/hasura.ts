@@ -67,3 +67,31 @@ export const createNewUser = async (token: string, metadata: any) => {
   );
   return res?.users?.length === 0;
 };
+
+export const findVideoIdByUser = async (
+  token: string,
+  userId: string,
+  videoId: string
+) => {
+  const operationsDoc = `query findVideoIdByUserId($userId: String!, $videoId: String!) {
+    stats(where: {userId: {_eq: $userId}, videoId: {_eq: $videoId}}) {
+      id
+      favourited
+      userId
+      videoId
+      watched
+    }
+  }`;
+
+  const res = await queryHasuraGQL(
+    operationsDoc,
+    "findVideoIdByUserId",
+    {
+      userId,
+      videoId,
+    },
+    token
+  );
+
+  return await res.json();
+};
