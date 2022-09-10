@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwt } from "jsonwebtoken";
-import { findVideoIdByUser, updateStat } from "@lib/db/hasura";
+import { findVideoIdByUser, insertStat, updateStat } from "@lib/db/hasura";
 import { VideoStatGraphQLData } from "types";
 
 export default async function stats(
@@ -22,17 +22,24 @@ export default async function stats(
       );
       if (doesStatExist) {
         // update video
-        const updatevideo: VideoStatGraphQLData = {
+        const updateVideo: VideoStatGraphQLData = {
           favourited: 0,
           watched: true,
           userId: decodedToken.issuer,
           videoId,
         };
-        const updateRes = await updateStat(token, updatevideo);
+        const updateRes = await updateStat(token, updateVideo);
         res.status(200).json({ done: true, updateRes });
       } else {
         // add video
-        res.status(200).json({ done: true, decodedToken, doesStatExist });
+        const insertVideo: VideoStatGraphQLData = {
+          favourited: 0,
+          watched: true,
+          userId: decodedToken.issuer,
+          videoId,
+        };
+        const insertRes = await insertStat(token, insertVideo);
+        res.status(200).json({ done: true, insertRes });
       }
     } catch (error) {
       console.log("Error occured /stats ", error);

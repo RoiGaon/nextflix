@@ -100,13 +100,16 @@ export const findVideoIdByUser = async (
 
 export const insertStat = async (
   token: string,
-  userId: string,
-  videoId: string
+  { favourited, watched, userId, videoId }: VideoStatGraphQLData
 ) => {
   const operationsDoc = `mutation insertStat($favourited: Int!, $watched: Boolean!, $userId: String!, $videoId: String!) {
-    insert_stats_one(object: {favourited: $favourited, userId: $userId, videoId: $videoId, watched: $watched}) {
+    insert_stats_one(object: {
+      favourited: $favourited,
+      userId: $userId,
+      videoId: $videoId,
+      watched: $watched
+    }) {
       favourited
-      id
       userId
     }
   }`;
@@ -115,6 +118,8 @@ export const insertStat = async (
     operationsDoc,
     "insertStat",
     {
+      favourited,
+      watched,
       userId,
       videoId,
     },
