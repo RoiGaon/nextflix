@@ -15,6 +15,7 @@ import { getYouTubeVideoById } from "lib/videos";
 // Styles
 import S from "../../styles/VideoPage.module.css";
 import cn from "classnames";
+import { DisLikeIcon, LikeIcon } from "@components/icons";
 
 Modal.setAppElement("#__next");
 
@@ -51,6 +52,8 @@ const VideoPage = ({
             frameBorder="0"
             className={S.videoPlayer}
           />
+          <LikeIcon />
+          <DisLikeIcon />
           <div className={S.modalBody}>
             <div className={S.modalBodyContent}>
               <div className={S.col1}>
