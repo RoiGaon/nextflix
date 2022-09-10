@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { jwt } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { findVideoIdByUser, insertStat, updateStat } from "@lib/db/hasura";
 import { VideoStatGraphQLData } from "types";
 
