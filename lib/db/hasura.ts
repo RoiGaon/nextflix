@@ -131,7 +131,7 @@ export const updateStat = async (
   token: string,
   { favourited, watched, userId, videoId }: VideoStatGraphQLData
 ) => {
-  const operationsDoc = `mutation updateStat($watched: Boolean!, $userId: String!, $videoId: String!) {
+  const operationsDoc = `mutation updateStat($watched: Boolean!, $userId: String!, $videoId: String!, $favourited: Int!) {
     update_stats(
       _set: {watched: $watched, favourited: $favourited},
       where: {
