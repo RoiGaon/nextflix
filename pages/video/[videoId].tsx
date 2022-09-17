@@ -37,10 +37,9 @@ const VideoPage = ({
 
   const runRatingService = async (favourited: number) =>
     await (
-      await fetch("/api/stats", {
+      await fetch(`/api/stats${videoId}`, {
         method: "POST",
         body: JSON.stringify({
-          videoId,
           favourited,
         }),
         headers: { "Content-Type": "application/json" },

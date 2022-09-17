@@ -8,7 +8,8 @@ export default async function stats(
   res: NextApiResponse<any>
 ) {
   try {
-    const { videoId } = req.body;
+    let { videoId } = req.query;
+    videoId = String(videoId);
     const token = req.cookies.token;
     // check for a token
     if (!token)
