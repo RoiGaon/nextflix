@@ -37,7 +37,7 @@ export default async function stats(
           videoId,
         };
         const updateRes = await updateStat(token, updateVideo);
-        res.status(200).json({ done: true, updateRes });
+        return res.status(200).json({ done: true, updateRes });
       } else {
         // add video
         const insertVideo: VideoStatGraphQLData = {
@@ -47,11 +47,11 @@ export default async function stats(
           videoId,
         };
         const insertRes = await insertStat(token, insertVideo);
-        res.status(200).json({ done: true, insertRes });
+        return res.status(200).json({ done: true, insertRes });
       }
     } catch (error) {
       console.log("Error occured /stats ", error);
-      res.status(500).json({ done: false, error });
+      return res.status(500).json({ done: false, error });
     }
   } else if (req.method === "GET") {
     try {
@@ -75,13 +75,13 @@ export default async function stats(
       );
       const doesStatExist = findVideo?.length > 0;
       if (doesStatExist) {
-        res.status(200).json({ done: true, findVideo });
+        return res.status(200).json({ done: true, findVideo });
       } else {
-        res.status(404).json({ done: true, msg: "video was not found" });
+        return res.status(404).json({ done: true, msg: "video was not found" });
       }
     } catch (error) {
       console.log("Error occured /stats ", error);
-      res.status(500).json({ done: false, error });
+      return res.status(500).json({ done: false, error });
     }
   }
 }
