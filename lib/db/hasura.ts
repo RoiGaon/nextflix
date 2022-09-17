@@ -40,7 +40,7 @@ export const isNewUser = async (token: string, issuer: string) => {
     },
     token
   );
-  return res?.users?.length === 0;
+  return res?.data?.users?.length === 0;
 };
 
 export const createNewUser = async (token: string, metadata: any) => {
@@ -67,7 +67,7 @@ export const createNewUser = async (token: string, metadata: any) => {
     },
     token
   );
-  return res?.users?.length === 0;
+  return res?.data?.users?.length === 0;
 };
 
 export const findVideoIdByUser = async (
@@ -95,7 +95,7 @@ export const findVideoIdByUser = async (
     token
   );
 
-  return res?.stats?.length > 0;
+  return res?.data?.stats;
 };
 
 export const insertStat = async (

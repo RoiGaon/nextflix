@@ -22,11 +22,12 @@ export default async function stats(
           .json({ done: false, message: "missing videoId" });
       // verify token
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-      const doesStatExist = await findVideoIdByUser(
+      const findVideo = await findVideoIdByUser(
         token,
         decodedToken.issuer,
         videoId
       );
+      const doesStatExist = findVideo?.length > 0;
       if (doesStatExist) {
         // update video
         const updateVideo: VideoStatGraphQLData = {
@@ -47,6 +48,36 @@ export default async function stats(
         };
         const insertRes = await insertStat(token, insertVideo);
         res.status(200).json({ done: true, insertRes });
+      }
+    } catch (error) {
+      console.log("Error occured /stats ", error);
+      res.status(500).json({ done: false, error });
+    }
+  } else if (req.method === "GET") {
+    try {
+      const token = req.cookies.token;
+      // check for a token
+      if (!token)
+        return res
+          .status(403)
+          .json({ done: false, message: "Forbidden client" });
+      const { videoId } = req.body;
+      if (!videoId)
+        return res
+          .status(400)
+          .json({ done: false, message: "missing videoId" });
+      // verify token
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const findVideo = await findVideoIdByUser(
+        token,
+        decodedToken.issuer,
+        videoId
+      );
+      const doesStatExist = findVideo?.length > 0;
+      if (doesStatExist) {
+        res.status(200).json({ done: true, findVideo });
+      } else {
+        res.status(404).json({ done: true, msg: "video was not found" });
       }
     } catch (error) {
       console.log("Error occured /stats ", error);
