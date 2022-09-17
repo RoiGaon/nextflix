@@ -35,6 +35,20 @@ const VideoPage = ({
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
 
+  React.useEffect(() => {
+    if (!videoId) return;
+    const func = async () => {
+      const { findVideo } = await (
+        await fetch(`/api/stats?videoId=${videoId}`)
+      ).json();
+
+      findVideo.length > 0 && findVideo[0].favourited === 1
+        ? setIsLiked(true)
+        : setIsLiked(false);
+    };
+    func();
+  }, [videoId]);
+
   const runRatingService = async (favourited: number) =>
     await (
       await fetch("/api/stats", {
