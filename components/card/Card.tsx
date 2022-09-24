@@ -13,6 +13,7 @@ interface Props {
   video: Video;
   size: Size;
   index: number;
+  shouldScale: boolean;
 }
 
 const classMap: any = {
@@ -28,15 +29,18 @@ const Card: React.FC<Props> = ({
   video: { imgUrl = defaultImage, id, title },
   size = "medium",
   index,
+  shouldScale = true,
 }) => {
   const [imgSrc, setImgSrc] = React.useState(imgUrl);
+  const scale = index === 0 ? { scaleY: 1.1 } : { scale: 1.1 };
+
   return (
     <>
       <Link href={`/video/${encodeURIComponent(id)}`} passHref>
         <div className={S.container}>
           <motion.div
             className={cn(classMap[size], S.imgMotionWrapper)}
-            whileHover={index === 0 ? { scaleY: 1.1 } : { scale: 1.1 }}
+            whileHover={shouldScale ? { ...scale } : undefined}
           >
             <Image
               src={imgSrc}

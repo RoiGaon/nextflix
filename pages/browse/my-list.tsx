@@ -29,7 +29,13 @@ const MyList: NextPage = ({
       <div className={S.main}>
         <NavBar />
         <div className={S.sectionWrapper}>
-          <SectionCards title="Disney" videos={favouritedVideos} size="small" />
+          <SectionCards
+            title="Disney"
+            videos={favouritedVideos}
+            size="small"
+            shouldWrap
+            shouldScale={false}
+          />
         </div>
       </div>
     </>
