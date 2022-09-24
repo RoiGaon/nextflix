@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
 import { findVideoIdByUser, insertStat, updateStat } from "@lib/db/hasura";
 import { VideoStatGraphQLData } from "types";
+import { verifyToken } from "@lib/utils";
 
 export default async function stats(
   req: NextApiRequest,
@@ -17,12 +17,9 @@ export default async function stats(
     if (!videoId)
       return res.status(400).json({ done: false, message: "missing videoId" });
     // verify token
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const findVideo = await findVideoIdByUser(
-      token,
-      decodedToken.issuer,
-      videoId
-    );
+
+    const userId = await verifyToken(token);
+    const findVideo = await findVideoIdByUser(token, userId, videoId);
     const doesStatExist = findVideo?.length > 0;
     if (req.method === "POST") {
       const { favourited, watched = true } = req.body;
@@ -32,7 +29,7 @@ export default async function stats(
         const updateVideo: VideoStatGraphQLData = {
           favourited,
           watched,
-          userId: decodedToken.issuer,
+          userId,
           videoId,
         };
         const updateRes = await updateStat(token, updateVideo);
@@ -42,7 +39,7 @@ export default async function stats(
         const insertVideo: VideoStatGraphQLData = {
           favourited,
           watched,
-          userId: decodedToken.issuer,
+          userId: userId,
           videoId,
         };
         const insertRes = await insertStat(token, insertVideo);

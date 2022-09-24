@@ -3,13 +3,15 @@ import * as React from "react";
 import Head from "next/head";
 import type {
   GetServerSideProps,
+  GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
 // Components
 import { Banner, NavBar, SectionCards } from "@components";
 // Helpers
-import { getPopularVideos, getVideos } from "lib/videos";
+import { getPopularVideos, getVideos, getWatchItAgainVideos } from "lib/videos";
+import { redirectUser } from "utils/redirectUser";
 // Styles
 import S from "@styles/Home.module.css";
 
@@ -18,6 +20,7 @@ const Home: NextPage = ({
   productivityVideos,
   travelVideos,
   popularVideos,
+  watchedItAgainVideos,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className={S.container}>
@@ -36,6 +39,11 @@ const Home: NextPage = ({
         />
         <div className={S.sectionWrapper}>
           <SectionCards title="Disney" videos={disneyVideos} size="large" />
+          <SectionCards
+            title="Watch it again"
+            videos={watchedItAgainVideos}
+            size="small"
+          />
           <SectionCards title="Travel" videos={travelVideos} size="small" />
           <SectionCards
             title="Productivity"
@@ -51,18 +59,32 @@ const Home: NextPage = ({
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { userId, token } = await redirectUser(context);
+  if (!userId) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   const disneyVideos = await getVideos("disney trailer");
   const productivityVideos = await getVideos("Productivity");
   const travelVideos = await getVideos("travel");
   const popularVideos = await getPopularVideos();
+  const watchedItAgainVideos = await getWatchItAgainVideos(userId, token);
 
   return {
     props: {
-      disneyVideos,
+      watchedItAgainVideos,
       productivityVideos,
-      travelVideos,
       popularVideos,
+      disneyVideos,
+      travelVideos,
     },
   };
 };
