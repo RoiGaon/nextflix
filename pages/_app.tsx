@@ -26,6 +26,20 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
   }, [router]);
 
+  React.useEffect(() => {
+    const handleLoggedIn = async () => {
+      const isLoggedIn = await magic!.user.isLoggedIn();
+      if (isLoggedIn) {
+        // route to /
+        router.push("/");
+      } else {
+        // route to /login
+        router.push("/login");
+      }
+    };
+    handleLoggedIn();
+  }, []);
+
   return isLoading ? <Loading /> : <Component {...pageProps} />;
 }
 
