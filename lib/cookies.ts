@@ -12,3 +12,12 @@ export const setTokenCookie = (token: string, res: NextApiResponse<any>) => {
   });
   res.setHeader("Set-Cookie", setCookie);
 };
+
+export const removeTokenCookie = (res: NextApiResponse<any>) => {
+  const val = cookie.serialize("token", "", {
+    maxAge: -1,
+    path: "/",
+  });
+
+  res.setHeader("Set-Cookie", val);
+};

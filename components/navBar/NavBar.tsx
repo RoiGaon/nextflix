@@ -2,24 +2,26 @@ import * as React from "react";
 // Next
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 // Helpers
 import { magic } from "lib/magic-client";
 // Styles
 import S from "./NavBar.module.css";
-import { useRouter } from "next/router";
 
 const NavBar: React.FC = () => {
   const [showDropDown, setShowDropDown] = React.useState(false);
   const [userName, setUserName] = React.useState("");
-
+  const [didToken, setDidToken] = React.useState("");
   const router = useRouter();
 
   React.useEffect(() => {
     async function getUsername() {
       try {
         const { email } = await magic!.user.getMetadata();
+        const didToken = await magic!.user.getIdToken();
         if (email) {
           setUserName(email);
+          setDidToken(didToken);
         }
       } catch (error) {
         console.log("Error retrieving email:", error);
@@ -28,10 +30,19 @@ const NavBar: React.FC = () => {
     getUsername();
   }, []);
 
-  const handleSignout = async () => {
+  const handleSignout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
     try {
-      await magic!.user.logout();
-      router.push("/login");
+      const res = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      await res.json();
     } catch (error) {
       console.error("Error logging out", error);
       router.push("/login");
