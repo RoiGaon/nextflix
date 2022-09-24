@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const { userId, token } = await redirectUser(context);
-  if (!userId) {
+  if (!userId || !token) {
     return {
       props: {},
       redirect: {
